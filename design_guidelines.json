@@ -1,0 +1,130 @@
+{
+  "theme": "dark",
+  "project_name": "WC Barbearia",
+  "archetype": "ARCHETYPE 5: LUXURY (Premium, Depth, Mystery) infused with Organic/Earthy tones",
+  "typography": {
+    "headings": {
+      "family": "Playfair Display",
+      "weights": ["400", "700", "900"],
+      "usage": "H1-H3 for premium marketing, hero sections, and main app headers. Use tracking-tight for H1/H2."
+    },
+    "body": {
+      "family": "Manrope",
+      "weights": ["300", "400", "500", "600"],
+      "usage": "Body text, UI elements, admin dashboard, buttons, data tables. High legibility for schedules."
+    },
+    "rules": [
+      "No generic fonts for headers (No Inter, Roboto, etc.).",
+      "Large headings must use tight letter spacing (tracking-tight or tracking-tighter).",
+      "Overlines and small labels must be uppercase, tiny, and widely spaced (tracking-[0.2em])."
+    ]
+  },
+  "colors": {
+    "background": {
+      "default": "#0D0D0D",
+      "surface": "#161616",
+      "card": "#1A1A1A"
+    },
+    "primary": {
+      "default": "#D4AF37",
+      "hover": "#C5A059",
+      "description": "Vintage Gold - Used for primary actions, loyalty badges, and VIP elements."
+    },
+    "secondary": {
+      "default": "#8C5A35",
+      "description": "Rich Leather - Used for secondary accents and warmth."
+    },
+    "text": {
+      "primary": "#F3F4F6",
+      "secondary": "#9CA3AF",
+      "inverse": "#0D0D0D"
+    },
+    "status": {
+      "pendente": "#F59E0B",
+      "confirmado": "#3B82F6",
+      "concluido": "#10B981",
+      "cancelado": "#EF4444"
+    },
+    "rules": [
+      "Never use pure black or pure white. Always slightly tint or use rich charcoal.",
+      "Primary Gold should be used sparingly for CTAs, selected states, and membership badges.",
+      "Ensure minimum 4.5:1 contrast ratio for all text elements."
+    ]
+  },
+  "visual_enhancers": {
+    "surfaces": [
+      "Glassmorphism (The Crystal Variant): Use for mobile bottom navigation, sticky headers, and modal overlays. `backdrop-blur-xl bg-black/60 border-t border-white/10`.",
+      "Neumorphism (Tactile): Use for selected time slots and active filters. Soft shadows with sharp inner contrasts.",
+      "Grid Borders: Use for Admin Dashboard data tables and metric cards. `border-border/20`."
+    ],
+    "textures": "Add subtle grain overlay (`bg-noise`) on hero sections or membership cards to create a physical, premium feel.",
+    "shapes": "Subtle rounded corners (e.g., `rounded-lg` or `rounded-xl`). Avoid completely sharp or pill-shaped cards unless it's a specific badge or small button."
+  },
+  "components": {
+    "forms": "Use Shadcn Input, Select, Checkbox. Heavily customize to match dark theme (bg-zinc-900 border-zinc-800 text-zinc-100 focus:border-gold-500).",
+    "buttons": "Primary: Solid Gold background with inverse text (`bg-[#D4AF37] text-[#0D0D0D] hover:bg-[#C5A059]`). Secondary: Outline with Gold border or Ghost.",
+    "cards": "For client-side app, use cardless or flat rectangular containers with 1px subtle borders (`border-white/10`). Add `-translate-y-1` on hover for interactive items.",
+    "calendar": "Shadcn Calendar. Customize active date to use Primary Gold. Days with no availability should be deeply muted and disabled.",
+    "time_slots": "Grid of radio buttons styled as elegant cards. Active state gets a 1px solid Gold border and subtle glow.",
+    "toasts": "Use `sonner` for notifications. Dark mode styled toasts. Location: `/app/frontend/src/components/ui/sonner.tsx`."
+  },
+  "grids_and_layouts": {
+    "client_app": {
+      "strategy": "Mobile-First PWA, bottom tab navigation.",
+      "home": "Bento Grid strategy (Mode A: Tetris Grid). Top spans for Loyalty Points (Gold gradient or texture), smaller spans for Next Appointment and Quick Rebook.",
+      "booking_flow": "Step-by-step full screen or slide-over panels. 1: Service (List view), 2: Date & Time (Calendar + Slot grid), 3: Confirmation."
+    },
+    "admin_dashboard": {
+      "strategy": "High Density Grid (Mode B).",
+      "layout": "Sidebar navigation (collapsible) + main content area.",
+      "content": "Top row summary widgets (Appointments, Revenue). Main area: Data table for appointments with quick-action status dropdowns (Pendente -> Confirmado -> Concluido)."
+    },
+    "spacing": "Generous Spacing Philosophy. Use `p-6` or `p-8` for card padding. Ensure breathing room between sections."
+  },
+  "motion": {
+    "interactions": "Hover states on all interactive elements. Click/press states (`active:scale-95`).",
+    "transitions": "Use specific properties (e.g., `transition: transform 0.2s ease, opacity 0.2s ease`). NO `transition: all`.",
+    "page_loads": "Staggered entrance animations for service lists and time slots. Framer Motion is highly recommended for page transitions."
+  },
+  "accessibility": {
+    "contrast": "Minimum 4.5:1 for normal text, 3:1 for large text.",
+    "focus": "Clear focus rings, preferred Gold (`focus:ring-2 focus:ring-[#D4AF37]`).",
+    "testing": "All interactive elements MUST include a `data-testid` attribute (e.g., `data-testid=\"book-service-btn\"`)."
+  },
+  "media": {
+    "hero_backgrounds": {
+      "url": "https://images.unsplash.com/photo-1621645582931-d1d3e6564943?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2NDF8MHwxfHNlYXJjaHwzfHxwcmVtaXVtJTIwZGFyayUyMGJhcmJlcnNob3AlMjBpbnRlcmlvcnxlbnwwfHx8fDE3OTE4MjIzMzR8MA&ixlib=rb-4.1.0&q=85",
+      "description": "Premium dark barbershop interior with black and silver chair",
+      "usage": "Hero section background with heavy overlay (`bg-black/60`) or membership club banner."
+    },
+    "service_haircut": {
+      "url": "https://images.unsplash.com/photo-1599351431202-1e0f0137899a?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1MTN8MHwxfHNlYXJjaHw0fHxiYXJiZXIlMjBjdXR0aW5nJTIwaGFpcnxlbnwwfHx8fDE3OTE4MjIzMzN8MA&ixlib=rb-4.1.0&q=85",
+      "description": "Tattooed barber cutting hair",
+      "usage": "Thumbnail or header for standard haircut services."
+    },
+    "service_beard": {
+      "url": "https://images.unsplash.com/photo-1524230616393-d6229fcd2eff?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA3MDR8MHwxfHNlYXJjaHwxfHx2aW50YWdlJTIwc2hhdmluZyUyMGVxdWlwbWVudHxlbnwwfHx8fDE3OTE4MjIzMzR8MA&ixlib=rb-4.1.0&q=85",
+      "description": "Vintage shaving brush and straight razor",
+      "usage": "Thumbnail for beard trim and hot towel shave services."
+    },
+    "rules": "Never use placeholder images. Always preserve subject. Use `max-h-[80vh]` on mobile."
+  },
+  "instructions_to_main_agent": [
+    "Build a mobile-first PWA for clients and a desktop-first Admin dashboard.",
+    "Auth: Implement JWT auth with phone + password (not email).",
+    "Client Flow: Implement Bento-grid home -> Service Selection -> Date/Time Picker (double-booking validation via 409) -> Confirmation.",
+    "Loyalty: Members get 10 pts per service; 100 pts = R$20 voucher.",
+    "Membership Club: Ensure UI indicates VIP status (Gold badge). Peak hours (Fri/Sat) should be visually distinct or gated for non-members.",
+    "Admin Flow: Dashboard with pending bookings, ability to transition status (Pendente -> Confirmado -> Concluido -> Cancelado).",
+    "Frontend Tech: React (JS), Tailwind, Shadcn UI. Backend: FastAPI, MongoDB.",
+    "Do not center-align the main App container.",
+    "Ensure all Shadcn components (tabs, calendars, dialogs) are installed and customized for the dark luxury theme."
+  ],
+  "universal_guidelines": {
+    "1": "Do not make generic centered layouts. Use depth, layering, and z-index hierarchy.",
+    "2": "NEVER use emojis for icons. Use lucide-react or @phosphor-icons/react (Duotone weight for premium feel).",
+    "3": "Every interaction needs micro-animations (hover, press).",
+    "4": "Add data-testid attributes to all buttons, inputs, and key UI elements for robust testing.",
+    "5": "Do not use fully transparent backgrounds on headers or overlays. Use `backdrop-blur-xl bg-black/60`."
+  }
+}
