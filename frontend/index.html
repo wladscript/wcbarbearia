@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#0D0D0D">
+  <meta name="description" content="WC Barbearia - Sistema de Agendamento Autônomo e Clube de Fidelidade VIP">
+  <title>WC Barbearia | Clube de Membros & Agendamentos</title>
+  
+  <!-- Estilos e Tipografia -->
+  <link rel="stylesheet" href="/static/css/style.css">
+  <!-- Fallback para abertura direta -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="grain-bg"></div>
+  <div id="toast-container"></div>
+
+  <!-- ========================================================================= -->
+  <!-- VISTA: LOGIN & CADASTRO -->
+  <!-- ========================================================================= -->
+  <div id="view-login" class="view">
+    <div style="min-height: 100vh; display: flex; flex-direction: column; justify-content: center; max-width: 440px; margin: 0 auto; padding: 2rem 1.25rem;">
+      <div class="brand-mark" style="margin-bottom: 2rem;">
+        <div class="brand-icon-box">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg>
+        </div>
+        <div>
+          <span class="overline">Clube de Membros</span>
+          <h2 class="brand-title">WC Barbearia</h2>
+        </div>
+      </div>
+
+      <h1 style="font-size: 2.25rem; line-height: 1.15; margin-bottom: 0.5rem; font-weight: 700;">
+        Seu horário,<br><span class="gold-text">do seu jeito.</span>
+      </h1>
+      <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.75rem;">
+        Agende online, acumule pontos de fidelidade e desbloqueie horários VIP às sextas e sábados.
+      </p>
+
+      <!-- Tabs -->
+      <div class="auth-tabs">
+        <button type="button" id="tab-login" class="auth-tab active">Entrar</button>
+        <button type="button" id="tab-register" class="auth-tab">Criar conta</button>
+      </div>
+
+      <form id="auth-form">
+        <div id="register-fields" style="display: none;">
+          <div class="form-group">
+            <label class="form-label" for="auth-nome">Nome completo</label>
+            <input type="text" id="auth-nome" class="form-input" placeholder="Ex: João da Silva">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="auth-tel">Telefone (DDD + Número)</label>
+          <input type="tel" id="auth-tel" class="form-input" placeholder="11999990000" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="auth-pass">Senha</label>
+          <input type="password" id="auth-pass" class="form-input" placeholder="••••••••" required>
+        </div>
+
+        <label class="vip-checkbox-card" id="membro-card-wrap">
+          <input type="checkbox" id="auth-membro">
+          <div>
+            <span style="font-size: 0.9rem; font-weight: 700; color: var(--gold-primary); display: flex; align-items: center; gap: 4px;">
+              👑 Entrar no Clube de Membros
+            </span>
+            <p style="font-size: 0.78rem; color: var(--text-muted); margin-top: 2px;">
+              Acesso prioritário a horários de pico (sex/sáb) e benefícios exclusivos.
+            </p>
+          </div>
+        </label>
+
+        <button type="submit" id="auth-submit" class="btn btn-primary">
+          Entrar
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- VISTA: HOME (DASHBOARD CLIENTE) -->
+  <!-- ========================================================================= -->
+  <div id="view-home" class="view">
+    <div class="app-container">
+      <header class="brand-header">
+        <div class="brand-mark">
+          <div class="brand-icon-box">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg>
+          </div>
+          <span class="brand-title">WC Barbearia</span>
+        </div>
+        <button class="icon-btn" onclick="logout()" title="Sair da conta">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        </button>
+      </header>
+
+      <div>
+        <p style="color: var(--text-muted); font-size: 0.85rem;">Olá,</p>
+        <h1 style="font-size: 1.85rem; font-weight: 700; display: flex; align-items: center; gap: 8px;">
+          <span id="home-user-name">Cliente</span>
+          <span id="home-crown-icon" style="color: var(--gold-primary); font-size: 1.4rem; display: none;">👑</span>
+        </h1>
+      </div>
+
+      <!-- Bento Grid -->
+      <div class="bento-grid">
+        <!-- Fidelidade Card -->
+        <div class="bento-card bento-card-span-2 loyalty-banner">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span class="overline">Pontos de Fidelidade</span>
+            <span style="color: var(--gold-primary); font-size: 1.1rem;">✨</span>
+          </div>
+          <div style="font-family: var(--font-display); font-size: 3.25rem; font-weight: 700; margin-top: 0.25rem;" id="home-pontos-val">
+            0
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill" id="home-progress-fill" style="width: 0%;"></div>
+          </div>
+          <p id="home-pontos-info" style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.5rem;">
+            Faltam 100 pontos para um voucher de R$ 20
+          </p>
+        </div>
+
+        <!-- Ação Rápida: Agendar -->
+        <div class="bento-card bento-card-clickable" onclick="navigateTo('agendar')">
+          <div style="width: 38px; height: 38px; border-radius: var(--radius-md); background: var(--gold-primary); color: #000; display: flex; align-items: center; justify-content: center; margin-bottom: 0.75rem;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="12" y1="14" x2="12" y2="18"/><line x1="10" y1="16" x2="14" y2="16"/></svg>
+          </div>
+          <h3 style="font-size: 1.05rem; font-weight: 700;">Agendar</h3>
+          <p style="font-size: 0.75rem; color: var(--text-muted);">Novo horário</p>
+        </div>
+
+        <!-- Ação Rápida: Clube -->
+        <div class="bento-card bento-card-clickable" onclick="navigateTo('fidelidade')">
+          <div style="width: 38px; height: 38px; border-radius: var(--radius-md); background: var(--bg-surface); color: var(--gold-primary); border: 1px solid var(--gold-border); display: flex; align-items: center; justify-content: center; margin-bottom: 0.75rem;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+          </div>
+          <h3 style="font-size: 1.05rem; font-weight: 700;">Clube</h3>
+          <p style="font-size: 0.75rem; color: var(--text-muted);">Resgatar pontos</p>
+        </div>
+      </div>
+
+      <!-- Próximo Horário -->
+      <h2 style="font-size: 1.15rem; font-weight: 700; margin-top: 2rem; margin-bottom: 0.75rem;">Próximo horário</h2>
+      <div id="home-next-appt"></div>
+
+      <!-- Histórico -->
+      <h2 style="font-size: 1.15rem; font-weight: 700; margin-top: 2rem; margin-bottom: 0.75rem;">Meus agendamentos</h2>
+      <div id="home-history-list"></div>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- VISTA: AGENDAMENTO (3 PASSOS) -->
+  <!-- ========================================================================= -->
+  <div id="view-agendar" class="view">
+    <div class="app-container">
+      <header style="display: flex; align-items: center; gap: 0.85rem; margin-bottom: 1rem;">
+        <button class="icon-btn" onclick="bookingBack()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+        </button>
+        <div>
+          <span class="overline" id="step-indicator">Passo 1 de 3</span>
+          <h1 style="font-size: 1.35rem; font-weight: 700;">Agendar Horário</h1>
+        </div>
+      </header>
+
+      <!-- Stepper -->
+      <div class="stepper-progress">
+        <div id="step-bar-1" class="step-bar active"></div>
+        <div id="step-bar-2" class="step-bar"></div>
+        <div id="step-bar-3" class="step-bar"></div>
+      </div>
+
+      <!-- PASSO 1: Selecionar Serviço -->
+      <div id="booking-step-1">
+        <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem;">Escolha o serviço desejado:</p>
+        <div id="services-container"></div>
+      </div>
+
+      <!-- PASSO 2: Data e Horário -->
+      <div id="booking-step-2" style="display: none;">
+        <!-- Calendário -->
+        <div class="calendar-wrapper">
+          <div class="calendar-header">
+            <button type="button" class="icon-btn" onclick="changeCalendarMonth(-1)">‹</button>
+            <span id="calendar-month-title" style="font-weight: 700; font-size: 0.95rem;">Outubro 2026</span>
+            <button type="button" class="icon-btn" onclick="changeCalendarMonth(1)">›</button>
+          </div>
+          <div class="calendar-grid">
+            <div class="calendar-day-header">DOM</div>
+            <div class="calendar-day-header">SEG</div>
+            <div class="calendar-day-header">TER</div>
+            <div class="calendar-day-header">QUA</div>
+            <div class="calendar-day-header">QUI</div>
+            <div class="calendar-day-header">SEX</div>
+            <div class="calendar-day-header">SÁB</div>
+          </div>
+          <div class="calendar-grid" id="calendar-days" style="margin-top: 6px;"></div>
+        </div>
+
+        <!-- Alerta VIP Sex/Sáb -->
+        <div id="peak-lock-alert" style="display: none; padding: 0.85rem 1rem; border-radius: var(--radius-md); background: rgba(212, 175, 55, 0.08); border: 1px solid var(--gold-border); font-size: 0.82rem; margin-bottom: 1rem; color: #fef08a;">
+          🔒 <strong>Atenção:</strong> Sextas e sábados são horários <span style="color: var(--gold-primary);">exclusivos para membros VIP</span>. Horários bloqueados para clientes sem assinatura.
+        </div>
+
+        <p style="font-size: 0.85rem; font-weight: 600; margin-bottom: 0.5rem;">Horários disponíveis:</p>
+        <div class="slots-grid" id="slots-container">
+          <p style="grid-column: span 4; text-align: center; color: var(--text-muted); font-size: 0.85rem; padding: 1.5rem;">
+            Selecione uma data acima para visualizar os horários.
+          </p>
+        </div>
+
+        <button type="button" id="btn-to-step-3" class="btn btn-primary" style="margin-top: 1.5rem;" disabled onclick="goToStep3()">
+          Continuar
+        </button>
+      </div>
+
+      <!-- PASSO 3: Confirmação -->
+      <div id="booking-step-3" style="display: none;">
+        <div class="bento-card" style="border-color: var(--gold-border);">
+          <span class="overline">Resumo do Agendamento</span>
+          <h2 style="font-size: 1.5rem; margin-top: 0.25rem; font-weight: 700;" id="summary-service-name">Serviço</h2>
+          
+          <div style="margin-top: 1.25rem; display: flex; flex-direction: column; gap: 0.65rem; font-size: 0.88rem;">
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: var(--text-muted);">Data:</span>
+              <strong id="summary-date">—</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: var(--text-muted);">Horário:</span>
+              <strong id="summary-time">—</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: var(--text-muted);">Cliente:</span>
+              <strong id="summary-client">—</strong>
+            </div>
+            <hr style="border: none; border-top: 1px solid var(--border-light); margin: 0.5rem 0;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span style="color: var(--text-muted);">Total:</span>
+              <span style="font-family: var(--font-display); font-size: 1.6rem; font-weight: 700; color: var(--gold-primary);" id="summary-total">R$ 0,00</span>
+            </div>
+          </div>
+        </div>
+
+        <button type="button" id="btn-confirm-booking" class="btn btn-primary" style="margin-top: 1.5rem;" onclick="confirmBooking()">
+          Confirmar Agendamento
+        </button>
+      </div>
+
+      <!-- TELA SUCESSO -->
+      <div id="booking-success" style="display: none; text-align: center; padding: 3rem 1rem;">
+        <div style="width: 80px; height: 80px; border-radius: 50%; background: rgba(52, 211, 153, 0.15); border: 2px solid #34d399; color: #34d399; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem auto;">
+          <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <h2 style="font-size: 1.85rem; font-weight: 700;">Horário reservado!</h2>
+        <p style="color: var(--text-muted); font-size: 0.95rem; margin-top: 0.5rem;" id="success-summary">—</p>
+        <p style="color: var(--gold-primary); font-size: 0.85rem; margin-top: 0.5rem;">Aguardando confirmação do barbeiro.</p>
+        <button class="btn btn-primary" style="margin-top: 2rem;" onclick="navigateTo('home')">Voltar ao início</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- VISTA: CLUBE & FIDELIDADE -->
+  <!-- ========================================================================= -->
+  <div id="view-fidelidade" class="view">
+    <div class="app-container">
+      <header class="brand-header">
+        <div class="brand-mark">
+          <div class="brand-icon-box">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg>
+          </div>
+          <span class="brand-title">Clube VIP</span>
+        </div>
+      </header>
+
+      <!-- Cartão VIP de Fidelidade -->
+      <div class="bento-card loyalty-banner">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span class="overline" id="loyalty-membership-status">Membro VIP</span>
+          <span id="loyalty-crown-icon" style="color: var(--gold-primary); font-size: 1.25rem;">👑</span>
+        </div>
+        <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 1rem;">Saldo de pontos:</p>
+        <div style="font-family: var(--font-display); font-size: 3.75rem; font-weight: 700; line-height: 1;" id="loyalty-points-val">0</div>
+        
+        <div class="progress-track" style="margin-top: 1rem;">
+          <div class="progress-fill" id="loyalty-progress-fill" style="width: 0%;"></div>
+        </div>
+        <p id="loyalty-points-hint" style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.5rem;">
+          100 pontos para o próximo voucher de R$ 20
+        </p>
+      </div>
+
+      <!-- Caixa de Resgate -->
+      <div class="bento-card" style="margin-top: 1rem;">
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+          <div style="width: 44px; height: 44px; border-radius: var(--radius-md); background: rgba(212, 175, 55, 0.12); display: flex; align-items: center; justify-content: center; color: var(--gold-primary);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+          </div>
+          <div>
+            <h3 style="font-size: 1rem; font-weight: 700;">Resgatar voucher</h3>
+            <p style="font-size: 0.75rem; color: var(--text-muted);">100 pontos = R$ 20,00 de desconto</p>
+          </div>
+        </div>
+
+        <button type="button" id="btn-redeem-voucher" class="btn btn-primary" style="margin-top: 1.25rem;" onclick="redeemLoyaltyVoucher()">
+          Resgatar voucher de R$ 20
+        </button>
+      </div>
+
+      <!-- Como Funciona -->
+      <div class="bento-card" style="margin-top: 1rem; font-size: 0.82rem; color: var(--text-muted);">
+        <strong style="color: var(--text-main); display: block; margin-bottom: 0.5rem;">Como funciona o Clube</strong>
+        <p>• Ganhe <strong style="color: var(--gold-primary);">10 pontos</strong> a cada serviço concluído.</p>
+        <p style="margin-top: 0.35rem;">• Junte <strong style="color: var(--gold-primary);">100 pontos</strong> e troque por R$ 20 em desconto.</p>
+        <p style="margin-top: 0.35rem;">• Membros VIP têm acesso exclusivo a agendamentos de sexta e sábado.</p>
+      </div>
+
+      <!-- Lista de Vouchers -->
+      <h2 style="font-size: 1.15rem; font-weight: 700; margin-top: 2rem; margin-bottom: 0.75rem;">Meus vouchers</h2>
+      <div id="vouchers-list"></div>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- VISTA: PAINEL DO BARBEIRO (ADMIN) -->
+  <!-- ========================================================================= -->
+  <div id="view-admin" class="view">
+    <div class="app-container admin-container">
+      <header class="brand-header">
+        <div class="brand-mark">
+          <div class="brand-icon-box">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg>
+          </div>
+          <div>
+            <h2 class="brand-title">WC Barbearia</h2>
+            <span class="overline">Painel do Barbeiro</span>
+          </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 1rem;">
+          <span style="font-size: 0.85rem; color: var(--text-muted);" id="admin-user-name">Administrador</span>
+          <button class="icon-btn" onclick="logout()" title="Sair">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          </button>
+        </div>
+      </header>
+
+      <!-- KPIs / Métricas -->
+      <div class="bento-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+        <div class="bento-card">
+          <span class="overline">Hoje</span>
+          <p style="font-size: 2.25rem; font-weight: 700; color: var(--gold-primary); margin-top: 0.25rem;" id="stat-hoje">0</p>
+        </div>
+        <div class="bento-card">
+          <span class="overline">Pendentes</span>
+          <p style="font-size: 2.25rem; font-weight: 700; color: #fbbf24; margin-top: 0.25rem;" id="stat-pendentes">0</p>
+        </div>
+        <div class="bento-card">
+          <span class="overline">Concluídos</span>
+          <p style="font-size: 2.25rem; font-weight: 700; color: #34d399; margin-top: 0.25rem;" id="stat-concluidos">0</p>
+        </div>
+        <div class="bento-card">
+          <span class="overline">Receita Concluída</span>
+          <p style="font-size: 2.25rem; font-weight: 700; color: var(--gold-primary); margin-top: 0.25rem;" id="stat-receita">R$ 0,00</p>
+        </div>
+      </div>
+
+      <!-- Filtros -->
+      <div style="display: flex; gap: 0.5rem; margin-top: 2rem; overflow-x: auto; padding-bottom: 0.5rem;">
+        <button class="btn btn-secondary admin-filter-pill active" style="width: auto; padding: 0.45rem 1rem; font-size: 0.8rem;" onclick="filterAdminAppointments('Todos', this)">Todos</button>
+        <button class="btn btn-secondary admin-filter-pill" style="width: auto; padding: 0.45rem 1rem; font-size: 0.8rem;" onclick="filterAdminAppointments('Pendente', this)">Pendente</button>
+        <button class="btn btn-secondary admin-filter-pill" style="width: auto; padding: 0.45rem 1rem; font-size: 0.8rem;" onclick="filterAdminAppointments('Confirmado', this)">Confirmado</button>
+        <button class="btn btn-secondary admin-filter-pill" style="width: auto; padding: 0.45rem 1rem; font-size: 0.8rem;" onclick="filterAdminAppointments('Concluido', this)">Concluído</button>
+        <button class="btn btn-secondary admin-filter-pill" style="width: auto; padding: 0.45rem 1rem; font-size: 0.8rem;" onclick="filterAdminAppointments('Cancelado', this)">Cancelado</button>
+      </div>
+
+      <!-- Tabela de Agendamentos -->
+      <div class="admin-table-wrapper">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Cliente</th>
+              <th>Serviço</th>
+              <th>Data / Horário</th>
+              <th>Valor</th>
+              <th>Status</th>
+              <th style="text-align: right;">Alterar Status</th>
+            </tr>
+          </thead>
+          <tbody id="admin-table-body">
+            <tr><td colspan="6" style="text-align: center; color: var(--text-muted); padding: 2rem;">Carregando agendamentos...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- BARRA DE NAVEGAÇÃO INFERIOR MOBILE -->
+  <!-- ========================================================================= -->
+  <nav class="bottom-nav" id="bottom-nav" style="display: none;">
+    <button class="nav-item" data-target="home">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <span>Início</span>
+    </button>
+    <button class="nav-item" data-target="agendar">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="12" y1="14" x2="12" y2="18"/><line x1="10" y1="16" x2="14" y2="16"/></svg>
+      <span>Agendar</span>
+    </button>
+    <button class="nav-item" data-target="fidelidade">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+      <span>Clube</span>
+    </button>
+    <button class="nav-item" data-target="logout">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      <span>Sair</span>
+    </button>
+  </nav>
+
+  <!-- Lógica da Aplicação -->
+  <script src="/static/js/app.js"></script>
+  <!-- Fallback direto -->
+  <script src="js/app.js"></script>
+</body>
+</html>

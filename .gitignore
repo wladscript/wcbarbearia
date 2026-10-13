@@ -61,7 +61,15 @@ chainlit.md
 # Deployment
 .vercel
 
+# Environment files
+.env
+*.env
+.env.*
+!*.env.example
+
 # Data and databases
+*.sqlite3
+db.sqlite3
 agenthub/agents/youtube/db
 
 # Archive files and large assets
@@ -84,3 +92,4 @@ android-sdk/
 # overlay black-box crash/user-report dumps — session data, never history
 **/.emergent/recordings/
 frontend/node_modules/.cache/default-development/1.pack
+meu-codigo.zip
